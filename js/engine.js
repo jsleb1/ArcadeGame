@@ -25,7 +25,7 @@
         ctx = canvas.getContext('2d'),
         lastTime;
 
-    canvas.width = 910;
+    canvas.width = 908;
     canvas.height = 1000;
     doc.body.appendChild(canvas);
     ctx.fillStyle = "green";
@@ -174,7 +174,11 @@
        allObstacles.forEach(function(obstacle) {
             obstacle.render();
         });
-       levelComplete.render();
+       allLives.forEach(function(life) {
+            life.render();
+       });
+        levelComplete.render();
+        gameOver.render();
         player.render();
     }
 
@@ -195,6 +199,7 @@
         'images/water-block.png',
         'images/grass-block.png',
         'images/puppy.png',
+        'images/puppy1.png',
         'images/owl.png',
         'images/Rock.png',
         'images/bridge.png',
@@ -202,11 +207,14 @@
         'images/bench.png',
         'images/tree.png',
         'images/dalmatian.gif',
+        'images/dalmatian1.png',
         'images/bbq.png',
         'images/tongs.png',
         'images/seasoning.png',
         'images/gate.png',
-        'images/Key.png'
+        'images/Key.png',
+        'images/rolls.png',
+        'images/Heart.png'
     ]);
     Resources.onReady(init);
 

@@ -1,51 +1,48 @@
 // Enemies our player must avoid
-var Enemy = function(x, y, speed, sprite) {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
+var Enemy = function(x, y, speed, sprite, direction) {
+
     this.x = x;
     this.y = y;
     this.speed = speed;
     this.width = 80;
     this.height = 70;
-
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
     this.sprite = sprite;
+    this.direction = direction;
 };
+
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
-
-
 Enemy.prototype.update = function(dt) {
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
 
     // Enemy movement loop
-    if (this.x > 910){ // If enemy is off-canvas, start over at -80
+    if (this.direction == 1 && this.x > 910){ // If enemy is off-canvas, start over at -80
         this.x = -80;
-        this.speed = Math.random() * (120 - 60) + 60;
+        this.speed = Math.random() * (120 - 60) + 90;
+    } else if (this.direction == 2 && this.x < 0){ // If enemy is off-canvas, start over at -80
+        this.x = 930;
+        this.speed = -85;
+    } else if (allLives.length === 0 || (allItems.length === 0 && this.y < 20)) {
+        allEnemies.length = 0;
     } else {
-       this.x = this.x + (this.speed * dt);
+        this.x = this.x + (this.speed * dt);
     }
 };
 
-// Draw the enemy on the screen, required method for game
+
+// Draw the enemy on the screen
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
 
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
+// Define Player class, handle update of player functions and movement
 var Player = function(x, y, speed) {
     this.sprite = 'images/owl.png';
     this.x = x;
     this.y = y;
     this.speed = speed;
-    this.width = 50;
+    this.width = 57;
     this.height = 63;
 };
 
@@ -61,6 +58,7 @@ Player.prototype.update = function(dt) {
         this.x = 844;
     } else if ((this.y < 55 && this.x <= 370) || (this.y < 55 && this.x >= 500)) {
         this.y = 800;
+        allLives.splice(allLives.length - 1);
     } else if ((this.x >=371 && this.x <= 499) && this.y < -1000) {
         this.y = 800;
     } else if (this.y > 800) {
@@ -76,7 +74,7 @@ Player.prototype.render = function() {
 
 Player.prototype.handleInput = function(key){
 
-    var playerMove = 30;
+    var playerMove = 42;
 
     this.savePreviousPosition();
     switch(key){
@@ -92,19 +90,22 @@ Player.prototype.handleInput = function(key){
         case 'right':
             this.x += playerMove;
             break;
+        case 'space':
+            this.reset();
     }
 };
 
-// Now instantiate your objects.
+
+// Instantiates Player and Enemy objects.
 var player = new Player(420, 800);
-var allEnemies = [  new Enemy(-200, 210, 77, 'images/puppy.png'),
-                    new Enemy(-700, 222, 77, "images/dalmatian.gif"),
-                    new Enemy(-400, 300, 77, "images/puppy.png"),
-                    new Enemy(200, 550, 77, "images/dalmatian.gif"),
-                    new Enemy(-300, 550, 77, "images/puppy.png"),
-                    new Enemy(-10, 635, 77, "images/dalmatian.gif"),
-                    new Enemy(-500, 635, 77, "images/puppy.png"),
-                    new Enemy(-10, 300, 77, "images/dalmatian.gif")];
+var allEnemies = [  new Enemy(-200, 220, 77, 'images/puppy.png', 1),
+                    new Enemy(-700, 222, 77, "images/dalmatian.gif", 1),
+                    new Enemy(1300, 300, -77, "images/puppy1.png", 2),
+                    new Enemy(920, 300, -77, "images/dalmatian1.png", 2),
+                    new Enemy(200, 550, 77, "images/dalmatian.gif", 1),
+                    new Enemy(-300, 550, 77, "images/puppy.png", 1),
+                    new Enemy(920, 635, -77, "images/dalmatian1.png", 2),
+                    new Enemy(1400, 635, -77, "images/puppy1.png", 2)];
 
 
 Player.prototype.savePreviousPosition = function() {
@@ -112,8 +113,8 @@ Player.prototype.savePreviousPosition = function() {
     previousY = this.y;
 };
 
-// Check Player collision with Enemies
 
+// Check Player collision with Enemies
 Player.prototype.checkCollisions = function() {
     for (var i = 0; i < allEnemies.length; i++) {
         var enemy = allEnemies[i];
@@ -124,9 +125,11 @@ Player.prototype.checkCollisions = function() {
             enemy.height + (enemy.y - 40) > this.y) {
                 this.x = 420;
                 this.y = 800;
+                allLives.splice(allLives.length - 1);
         }
     }
 };
+
 
 // Check Player collision with Obstacles
 Player.prototype.checkObstacles = function() {
@@ -137,17 +140,12 @@ Player.prototype.checkObstacles = function() {
         obstacle.y < (this.y + 8) + this.height &&
         obstacle.height + obstacle.y > (this.y + 8)) {
             this.backPreviousPosition();
-}
-}
+        }
+    }
 };
 
-Player.prototype.backPreviousPosition = function() {
-    this.x = previousX;
-    this.y = previousY;
-};
 
 // Check Player collision with Items
-
 Player.prototype.checkItems = function() {
         for (var i = 0; i < allItems.length; i++) {
         var item = allItems[i];
@@ -156,12 +154,12 @@ Player.prototype.checkItems = function() {
         item.y < (this.y + 8) + this.height &&
         item.height + item.y > (this.y + 8)) {
             allItems.splice(i, 1);
-}
-}
+        }
+    }
 };
 
-// Check Player collision with Gate
 
+// Check Player collision with Gate
 Player.prototype.checkGate = function() {
         this.checkItems();
 
@@ -175,27 +173,25 @@ Player.prototype.checkGate = function() {
                 allGate.splice(i);
             } else {
             this.backPreviousPosition();}
-}
+        }
+    }
+};
+
+
+// Reset player location to start and define player previous location for collisions
+Player.prototype.reset = function() {
+    if (allLives.length === 0 || (allItems.length === 0 && this.y < 20)) {
+        location.reload();
 }
 };
 
-var LevelComplete = function() {
-    this.x = 0;
-    this.y = 0;
-}
-
-LevelComplete.prototype.render = function() {
-        if (player.y < 20) {
-            ctx.fillStyle = "white";
-            ctx.font = "60px Comic Sans MS";
-            ctx.fillText("Level Complete", 250, 200);
-        }
-    };
-
-var levelComplete = new LevelComplete();
+Player.prototype.backPreviousPosition = function() {
+    this.x = previousX;
+    this.y = previousY;
+};
 
 
-// -----------------------------------Create and format collisions for Obstacles--------------------------------
+// Create and format collisions for Obstacles
 var Rock = function(x, y) {
     this.sprite = 'images/Rock.png';
     this.x = x;
@@ -212,7 +208,7 @@ var Bench = function(x, y) {
     this.sprite = 'images/bench.png';
     this.x = x;
     this.y = y;
-    this.width = 100;
+    this.width = 140;
     this.height = 20;
 };
 
@@ -232,12 +228,24 @@ Tree.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-allObstacles = [new Rock(204, 373), new Rock(406, 373), new Rock(608, 373),
-                new Rock(2, 700), new Rock(808, 700), new Rock(2, 455), new Rock(808, 455),
-                new Bench(328, 670), new Bench(442, 670), new Bench(328, 470), new Bench(442, 470),new Tree(1, 57), new Tree(250, 57),
-                new Tree(505, 57), new Tree(760, 57)];
+allObstacles = [new Rock(204, 373),
+                new Rock(406, 373),
+                new Rock(608, 373),
+                new Rock(2, 707),
+                new Rock(808, 707),
+                new Rock(2, 455),
+                new Rock(808, 455),
+                new Bench(328, 670),
+                new Bench(442, 670),
+                new Bench(328, 470),
+                new Bench(442, 470),
+                new Tree(-19, 57),
+                new Tree(250, 57),
+                new Tree(525, 57),
+                new Tree(780, 57)];
 
-//----------------------------------Create and format collisions for special items----------------------------
+
+//Create and format collisions for special items
 var Seasoning = function(x, y, sprite) {
     this.sprite = sprite;
     this.x = x;
@@ -262,10 +270,14 @@ Key.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-allItems = [new Seasoning(190, 120, 'images/bbq.png'), new Seasoning(680, 120, 'images/tongs.png'),
-            new Seasoning(430, 650, 'images/seasoning.png'), new Key(440, 300)];
+var allItems = [new Seasoning(190, 120, 'images/bbq.png'),
+            new Seasoning(680, 120, 'images/tongs.png'),
+            new Seasoning(430, 650, 'images/seasoning.png'),
+            new Seasoning(440, 350, 'images/rolls.png'),
+            new Key(15, 650)];
 
-//----------------------------------Create and format collisions for special items----------------------------
+
+//Create and format collisions for special items
 var Gate = function(x, y) {
     this.sprite = 'images/gate.png';
     this.x = x;
@@ -278,7 +290,61 @@ Gate.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-allGate = [new Gate(385, 30)];
+var allGate = [new Gate(385, 30)];
+
+
+// Define Player lives and render on screen
+var Life = function(x, y) {
+    this.sprite = 'images/Heart.png';
+    this.x = x;
+    this.y = y;
+}
+
+Life.prototype.render = function(){
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    ctx.fillStyle = "white";
+    ctx.font = "20px Comic Sans MS";
+    ctx.fillText("Lives", 10, 75);
+}
+
+var allLives = [new Life(70, 58), new Life(95, 58), new Life(120, 58)];
+
+// End level once complete or all lifes are gone
+var LevelComplete = function() {};
+
+LevelComplete.prototype.render = function() {
+        if (player.y < 20) {
+            ctx.fillStyle = "white";
+            ctx.font = "60px Comic Sans MS";
+            ctx.fillText("Level Complete", 250, 200);
+            ctx.strokeText("Level Complete", 250, 200);
+            ctx.font = "44px Comic Sans MS";
+            ctx.fillText(startOver, 150, 260);
+            ctx.strokeText(startOver,150, 260);
+            allEnemies.length = 0;
+        }
+    };
+
+var levelComplete = new LevelComplete();
+
+var GameOver = function() {};
+
+GameOver.prototype.render = function() {
+        if (allLives.length === 0) {
+            ctx.fillStyle = "white";
+            ctx.font = "60px Comic Sans MS";
+            ctx.fillText("Game Over!!!", 300, 210);
+            ctx.strokeText("Game Over!!!", 300, 210);
+            ctx.font = "44px Comic Sans MS";
+            ctx.fillText(startOver, 150, 260);
+            ctx.strokeText(startOver,150, 260);
+            player.x = 1000;
+        }
+    };
+
+var gameOver = new GameOver();
+
+var startOver = "Press 'Space Bar' to Play Again.";
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
