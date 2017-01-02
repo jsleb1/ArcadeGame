@@ -16,13 +16,13 @@ var Enemy = function(x, y, speed, sprite, direction) {
 Enemy.prototype.update = function(dt) {
 
     // Enemy movement loop
-    if (this.direction == 1 && this.x > 910) { // If enemy is off-canvas, start over at -80
+    if (this.direction == 1 && this.x > 910) { // Moves enemy Left --> Right. If enemy is off-canvas, start over at -80
         this.x = -80;
         this.speed = Math.random() * (120 - 60) + 90;
-    } else if (this.direction == 2 && this.x < 0) { // If enemy is off-canvas, start over at -80
+    } else if (this.direction == 2 && this.x < 0) { // Moves enemy Right --> Left. If enemy is off-canvas, start over at 930.
         this.x = 930;
         this.speed = -85;
-    } else if (allLives.length === 0 || (allItems.length === 0 && this.y < 20)) {
+    } else if (allLives.length === 0 || (allItems.length === 0 && this.y < 20)) { // Removes characters from screen once Game over or Level Complete occurs.
         allEnemies.length = 0;
     } else {
         this.x = this.x + (this.speed * dt);
@@ -74,21 +74,21 @@ Player.prototype.render = function() {
 
 Player.prototype.handleInput = function(key) {
 
-    var playerMove = 42;
+    var playerMovement = 42;
 
     this.savePreviousPosition();
     switch (key) {
         case 'up':
-            this.y -= playerMove;
+            this.y -= playerMovement;
             break;
         case 'down':
-            this.y += playerMove;
+            this.y += playerMovement;
             break;
         case 'left':
-            this.x -= playerMove;
+            this.x -= playerMovement;
             break;
         case 'right':
-            this.x += playerMove;
+            this.x += playerMovement;
             break;
         case 'space':
             this.reset();
