@@ -16,10 +16,10 @@ var Enemy = function(x, y, speed, sprite, direction) {
 Enemy.prototype.update = function(dt) {
 
     // Enemy movement loop
-    if (this.direction == 1 && this.x > 910){ // If enemy is off-canvas, start over at -80
+    if (this.direction == 1 && this.x > 910) { // If enemy is off-canvas, start over at -80
         this.x = -80;
         this.speed = Math.random() * (120 - 60) + 90;
-    } else if (this.direction == 2 && this.x < 0){ // If enemy is off-canvas, start over at -80
+    } else if (this.direction == 2 && this.x < 0) { // If enemy is off-canvas, start over at -80
         this.x = 930;
         this.speed = -85;
     } else if (allLives.length === 0 || (allItems.length === 0 && this.y < 20)) {
@@ -59,11 +59,11 @@ Player.prototype.update = function(dt) {
     } else if ((this.y < 55 && this.x <= 370) || (this.y < 55 && this.x >= 500)) {
         this.y = 885;
         allLives.splice(allLives.length - 1);
-    } else if ((this.x >=371 && this.x <= 499) && this.y < -1000) {
+    } else if ((this.x >= 371 && this.x <= 499) && this.y < -1000) {
         this.y = 885;
     } else if (this.y > 885) {
         this.y = 885;
-    } else if (this.y < 20 && this.x >=371 && this.x <= 499) {
+    } else if (this.y < 20 && this.x >= 371 && this.x <= 499) {
         this.y = -500;
     }
 };
@@ -72,12 +72,12 @@ Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-Player.prototype.handleInput = function(key){
+Player.prototype.handleInput = function(key) {
 
     var playerMove = 42;
 
     this.savePreviousPosition();
-    switch(key){
+    switch (key) {
         case 'up':
             this.y -= playerMove;
             break;
@@ -98,21 +98,15 @@ Player.prototype.handleInput = function(key){
 
 // Instantiates Player and Enemy objects.
 var player = new Player(420, 885);
-var allEnemies = [  new Enemy(-200, 305, 77, 'images/puppy.png', 1),
-                    new Enemy(-700, 307, 77, "images/dalmatian.gif", 1),
-                    new Enemy(1300, 385, -77, "images/puppy1.png", 2),
-                    new Enemy(920, 385, -77, "images/dalmatian1.png", 2),
-                    new Enemy(200, 635, 77, "images/dalmatian.gif", 1),
-                    new Enemy(-300, 635, 77, "images/puppy.png", 1),
-                    new Enemy(920, 720, -77, "images/dalmatian1.png", 2),
-                    new Enemy(1400, 720, -77, "images/puppy1.png", 2)];
-
-
-Player.prototype.savePreviousPosition = function() {
-    previousX = this.x;
-    previousY = this.y;
-};
-
+var allEnemies = [new Enemy(-200, 305, 77, 'images/puppy.png', 1),
+    new Enemy(-700, 307, 77, "images/dalmatian.gif", 1),
+    new Enemy(1300, 385, -77, "images/puppy1.png", 2),
+    new Enemy(920, 385, -77, "images/dalmatian1.png", 2),
+    new Enemy(200, 635, 77, "images/dalmatian.gif", 1),
+    new Enemy(-300, 635, 77, "images/puppy.png", 1),
+    new Enemy(920, 720, -77, "images/dalmatian1.png", 2),
+    new Enemy(1400, 720, -77, "images/puppy1.png", 2)
+];
 
 // Check Player collision with Enemies
 Player.prototype.checkCollisions = function() {
@@ -123,56 +117,9 @@ Player.prototype.checkCollisions = function() {
             enemy.x + enemy.width > this.x &&
             enemy.y < this.y + this.height &&
             enemy.height + (enemy.y - 40) > this.y) {
-                this.x = 420;
-                this.y = 800;
-                allLives.splice(allLives.length - 1);
-        }
-    }
-};
-
-
-// Check Player collision with Obstacles
-Player.prototype.checkObstacles = function() {
-        for (var i = 0; i < allObstacles.length; i++) {
-        var obstacle = allObstacles[i];
-        if (obstacle.x < this.x + this.width &&
-        obstacle.x + obstacle.width > this.x &&
-        obstacle.y < (this.y + 8) + this.height &&
-        obstacle.height + obstacle.y > (this.y + 8)) {
-            this.backPreviousPosition();
-        }
-    }
-};
-
-
-// Check Player collision with Items
-Player.prototype.checkItems = function() {
-        for (var i = 0; i < allItems.length; i++) {
-        var item = allItems[i];
-        if (item.x < this.x + this.width &&
-        item.x + item.width > this.x &&
-        item.y < (this.y + 8) + this.height &&
-        item.height + item.y > (this.y + 8)) {
-            allItems.splice(i, 1);
-        }
-    }
-};
-
-
-// Check Player collision with Gate
-Player.prototype.checkGate = function() {
-        this.checkItems();
-
-        for (var i = 0; i < allGate.length; i++) {
-        var gate = allGate[i];
-        if (gate.x < this.x + this.width &&
-        gate.x + gate.width > this.x &&
-        gate.y < (this.y + 8) + this.height &&
-        gate.height + gate.y > (this.y + 8)) {
-            if (allItems.length < 1) {
-                allGate.splice(i);
-            } else {
-            this.backPreviousPosition();}
+            this.x = 420;
+            this.y = 800;
+            allLives.splice(allLives.length - 1);
         }
     }
 };
@@ -182,14 +129,18 @@ Player.prototype.checkGate = function() {
 Player.prototype.reset = function() {
     if (allLives.length === 0 || (allItems.length === 0 && this.y < 20)) {
         location.reload();
-}
+    }
+};
+
+Player.prototype.savePreviousPosition = function() {
+    previousX = this.x;
+    previousY = this.y;
 };
 
 Player.prototype.backPreviousPosition = function() {
     this.x = previousX;
     this.y = previousY;
 };
-
 
 // Create and format collisions for Obstacles
 var Rock = function(x, y) {
@@ -229,20 +180,34 @@ Tree.prototype.render = function() {
 };
 
 allObstacles = [new Rock(204, 458),
-                new Rock(406, 458),
-                new Rock(608, 458),
-                new Rock(2, 792),
-                new Rock(808, 792),
-                new Rock(2, 540),
-                new Rock(808, 540),
-                new Bench(328, 750),
-                new Bench(442, 750),
-                new Bench(328, 555),
-                new Bench(442, 555),
-                new Tree(-19, 142),
-                new Tree(250, 142),
-                new Tree(525, 142),
-                new Tree(780, 142)];
+    new Rock(406, 458),
+    new Rock(608, 458),
+    new Rock(2, 792),
+    new Rock(808, 792),
+    new Rock(2, 540),
+    new Rock(808, 540),
+    new Bench(328, 750),
+    new Bench(442, 750),
+    new Bench(328, 555),
+    new Bench(442, 555),
+    new Tree(-19, 142),
+    new Tree(250, 142),
+    new Tree(525, 142),
+    new Tree(780, 142)
+];
+
+// Check Player collision with Obstacles
+Player.prototype.checkObstacles = function() {
+    for (var i = 0; i < allObstacles.length; i++) {
+        var obstacle = allObstacles[i];
+        if (obstacle.x < this.x + this.width &&
+            obstacle.x + obstacle.width > this.x &&
+            obstacle.y < (this.y + 8) + this.height &&
+            obstacle.height + obstacle.y > (this.y + 8)) {
+            this.backPreviousPosition();
+        }
+    }
+};
 
 
 //Create and format collisions for special items
@@ -271,13 +236,27 @@ Key.prototype.render = function() {
 };
 
 var allItems = [new Seasoning(190, 205, 'images/bbq.png'),
-            new Seasoning(680, 205, 'images/tongs.png'),
-            new Seasoning(430, 720, 'images/seasoning.png'),
-            new Seasoning(440, 415, 'images/rolls.png'),
-            new Key(15, 735)];
+    new Seasoning(680, 205, 'images/tongs.png'),
+    new Seasoning(430, 720, 'images/seasoning.png'),
+    new Seasoning(440, 415, 'images/rolls.png'),
+    new Key(15, 735)
+];
 
 
-//Create and format collisions for special items
+// Check Player collision with Items
+Player.prototype.checkItems = function() {
+    for (var i = 0; i < allItems.length; i++) {
+        var item = allItems[i];
+        if (item.x < this.x + this.width &&
+            item.x + item.width > this.x &&
+            item.y < (this.y + 8) + this.height &&
+            item.height + item.y > (this.y + 8)) {
+            allItems.splice(i, 1);
+        }
+    }
+};
+
+//Create and format collisions with Gate to complete level
 var Gate = function(x, y) {
     this.sprite = 'images/gate.png';
     this.x = x;
@@ -292,6 +271,25 @@ Gate.prototype.render = function() {
 
 var allGate = [new Gate(385, 115)];
 
+// Check Player collision with Gate
+Player.prototype.checkGate = function() {
+    this.checkItems();
+
+    for (var i = 0; i < allGate.length; i++) {
+        var gate = allGate[i];
+        if (gate.x < this.x + this.width &&
+            gate.x + gate.width > this.x &&
+            gate.y < (this.y + 8) + this.height &&
+            gate.height + gate.y > (this.y + 8)) {
+            if (allItems.length < 1) {
+                allGate.splice(i);
+            } else {
+                this.backPreviousPosition();
+            }
+        }
+    }
+};
+
 
 // Define Player lives and render on screen
 var Life = function(x, y) {
@@ -300,7 +298,7 @@ var Life = function(x, y) {
     this.y = y;
 }
 
-Life.prototype.render = function(){
+Life.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     ctx.fillStyle = "white";
     ctx.font = "20px Comic Sans MS";
@@ -313,34 +311,34 @@ var allLives = [new Life(70, 58), new Life(95, 58), new Life(120, 58)];
 var LevelComplete = function() {};
 
 LevelComplete.prototype.render = function() {
-        if (player.y < 20) {
-            ctx.fillStyle = "white";
-            ctx.font = "60px Comic Sans MS";
-            ctx.fillText("Level Complete", 250, 200);
-            ctx.strokeText("Level Complete", 250, 200);
-            ctx.font = "44px Comic Sans MS";
-            ctx.fillText(startOver, 150, 260);
-            ctx.strokeText(startOver,150, 260);
-            allEnemies.length = 0;
-        }
-    };
+    if (player.y < 20) {
+        ctx.fillStyle = "white";
+        ctx.font = "60px Comic Sans MS";
+        ctx.fillText("Level Complete", 250, 200);
+        ctx.strokeText("Level Complete", 250, 200);
+        ctx.font = "44px Comic Sans MS";
+        ctx.fillText(startOver, 150, 260);
+        ctx.strokeText(startOver, 150, 260);
+        allEnemies.length = 0;
+    }
+};
 
 var levelComplete = new LevelComplete();
 
 var GameOver = function() {};
 
 GameOver.prototype.render = function() {
-        if (allLives.length === 0) {
-            ctx.fillStyle = "white";
-            ctx.font = "60px Comic Sans MS";
-            ctx.fillText("Game Over!!!", 300, 210);
-            ctx.strokeText("Game Over!!!", 300, 210);
-            ctx.font = "44px Comic Sans MS";
-            ctx.fillText(startOver, 150, 260);
-            ctx.strokeText(startOver,150, 260);
-            player.x = 1000;
-        }
-    };
+    if (allLives.length === 0) {
+        ctx.fillStyle = "white";
+        ctx.font = "60px Comic Sans MS";
+        ctx.fillText("Game Over!!!", 300, 210);
+        ctx.strokeText("Game Over!!!", 300, 210);
+        ctx.font = "44px Comic Sans MS";
+        ctx.fillText(startOver, 150, 260);
+        ctx.strokeText(startOver, 150, 260);
+        player.x = 1000;
+    }
+};
 
 var gameOver = new GameOver();
 

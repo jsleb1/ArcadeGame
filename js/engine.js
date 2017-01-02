@@ -13,7 +13,6 @@
  * the canvas' context (ctx) object globally available to make writing app.js
  * a little simpler to work with.
  */
-
 (function(global) {
     /* Predefine the variables we'll be using within this scope,
      * create the canvas element, grab the 2D context for that canvas
@@ -117,16 +116,16 @@
          */
         var rowImages = [
                 'images/water-block.png',
-                'images/water-block.png',   // Top row is water
+                'images/water-block.png', // Top row is water
                 'images/grass-block.png',
                 'images/grass-block.png',
                 'images/grass-block.png',
                 'images/stone-block.png',
-                'images/stone-block.png',   // Row 1 of 3 of stone
-                'images/grass-block.png',   // Row 2 of 3 of stone
-                'images/grass-block.png',   // Row 3 of 3 of stone
-                'images/stone-block.png',   // Row 1 of 2 of grass
-                'images/stone-block.png',   // Row 2 of 2 of grass
+                'images/stone-block.png', // Row 1 of 3 of stone
+                'images/grass-block.png', // Row 2 of 3 of stone
+                'images/grass-block.png', // Row 3 of 3 of stone
+                'images/stone-block.png', // Row 1 of 2 of grass
+                'images/stone-block.png', // Row 2 of 2 of grass
             ],
             numRows = 11,
             numCols = 9,
@@ -152,7 +151,7 @@
 
         renderEntities();
 
-                ctx.drawImage(Resources.get('images/sign.png'), 355, 78);
+        ctx.drawImage(Resources.get('images/sign.png'), 355, 78);
 
     }
 
@@ -170,15 +169,15 @@
         allEnemies.forEach(function(enemy) {
             enemy.render();
         });
-       allGate.forEach(function(gate) {
+        allGate.forEach(function(gate) {
             gate.render();
         });
-       allObstacles.forEach(function(obstacle) {
+        allObstacles.forEach(function(obstacle) {
             obstacle.render();
         });
-       allLives.forEach(function(life) {
+        allLives.forEach(function(life) {
             life.render();
-       });
+        });
         levelComplete.render();
         gameOver.render();
         player.render();
