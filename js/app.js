@@ -57,12 +57,12 @@ Player.prototype.update = function(dt) {
     } else if (this.x > 844) {
         this.x = 844;
     } else if ((this.y < 55 && this.x <= 370) || (this.y < 55 && this.x >= 500)) {
-        this.y = 800;
+        this.y = 885;
         allLives.splice(allLives.length - 1);
     } else if ((this.x >=371 && this.x <= 499) && this.y < -1000) {
-        this.y = 800;
-    } else if (this.y > 800) {
-        this.y = 800;
+        this.y = 885;
+    } else if (this.y > 885) {
+        this.y = 885;
     } else if (this.y < 20 && this.x >=371 && this.x <= 499) {
         this.y = -500;
     }
@@ -97,15 +97,15 @@ Player.prototype.handleInput = function(key){
 
 
 // Instantiates Player and Enemy objects.
-var player = new Player(420, 800);
-var allEnemies = [  new Enemy(-200, 220, 77, 'images/puppy.png', 1),
-                    new Enemy(-700, 222, 77, "images/dalmatian.gif", 1),
-                    new Enemy(1300, 300, -77, "images/puppy1.png", 2),
-                    new Enemy(920, 300, -77, "images/dalmatian1.png", 2),
-                    new Enemy(200, 550, 77, "images/dalmatian.gif", 1),
-                    new Enemy(-300, 550, 77, "images/puppy.png", 1),
-                    new Enemy(920, 635, -77, "images/dalmatian1.png", 2),
-                    new Enemy(1400, 635, -77, "images/puppy1.png", 2)];
+var player = new Player(420, 885);
+var allEnemies = [  new Enemy(-200, 305, 77, 'images/puppy.png', 1),
+                    new Enemy(-700, 307, 77, "images/dalmatian.gif", 1),
+                    new Enemy(1300, 385, -77, "images/puppy1.png", 2),
+                    new Enemy(920, 385, -77, "images/dalmatian1.png", 2),
+                    new Enemy(200, 635, 77, "images/dalmatian.gif", 1),
+                    new Enemy(-300, 635, 77, "images/puppy.png", 1),
+                    new Enemy(920, 720, -77, "images/dalmatian1.png", 2),
+                    new Enemy(1400, 720, -77, "images/puppy1.png", 2)];
 
 
 Player.prototype.savePreviousPosition = function() {
@@ -228,21 +228,21 @@ Tree.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-allObstacles = [new Rock(204, 373),
-                new Rock(406, 373),
-                new Rock(608, 373),
-                new Rock(2, 707),
-                new Rock(808, 707),
-                new Rock(2, 455),
-                new Rock(808, 455),
-                new Bench(328, 670),
-                new Bench(442, 670),
-                new Bench(328, 470),
-                new Bench(442, 470),
-                new Tree(-19, 57),
-                new Tree(250, 57),
-                new Tree(525, 57),
-                new Tree(780, 57)];
+allObstacles = [new Rock(204, 458),
+                new Rock(406, 458),
+                new Rock(608, 458),
+                new Rock(2, 792),
+                new Rock(808, 792),
+                new Rock(2, 540),
+                new Rock(808, 540),
+                new Bench(328, 750),
+                new Bench(442, 750),
+                new Bench(328, 555),
+                new Bench(442, 555),
+                new Tree(-19, 142),
+                new Tree(250, 142),
+                new Tree(525, 142),
+                new Tree(780, 142)];
 
 
 //Create and format collisions for special items
@@ -270,11 +270,11 @@ Key.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-var allItems = [new Seasoning(190, 120, 'images/bbq.png'),
-            new Seasoning(680, 120, 'images/tongs.png'),
-            new Seasoning(430, 650, 'images/seasoning.png'),
-            new Seasoning(440, 350, 'images/rolls.png'),
-            new Key(15, 650)];
+var allItems = [new Seasoning(190, 205, 'images/bbq.png'),
+            new Seasoning(680, 205, 'images/tongs.png'),
+            new Seasoning(430, 720, 'images/seasoning.png'),
+            new Seasoning(440, 415, 'images/rolls.png'),
+            new Key(15, 735)];
 
 
 //Create and format collisions for special items
@@ -290,7 +290,7 @@ Gate.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-var allGate = [new Gate(385, 30)];
+var allGate = [new Gate(385, 115)];
 
 
 // Define Player lives and render on screen

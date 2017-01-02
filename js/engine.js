@@ -26,15 +26,17 @@
         lastTime;
 
     canvas.width = 908;
-    canvas.height = 1000;
+    canvas.height = 1200;
     doc.body.appendChild(canvas);
     ctx.fillStyle = "green";
-    ctx.fillRect(0, 800, 910, 200);
+    ctx.fillRect(0, 1000, 910, 200);
     ctx.fillStyle = "white";
-    ctx.font = "20px Comic Sans MS";
-    ctx.fillText("Guide Mr. Owl through the dog park.", 10, 945);
-    ctx.fillText("Collect all items to open the gate.", 360, 970);
-    ctx.fillText("Avoid the puppies!!", 695, 990);
+    ctx.font = "30px Comic Sans MS";
+    ctx.fillText("Guide Mr. Owl through the dog park.", 210, 1045);
+    ctx.font = "40px Comic Sans MS";
+    ctx.fillText("Collect all items to open the gate.", 140, 1105);
+    ctx.font = "60px Comic Sans MS";
+    ctx.fillText("Avoid the puppies!!", 195, 1175);
 
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
@@ -114,6 +116,7 @@
          * for that particular row of the game level.
          */
         var rowImages = [
+                'images/water-block.png',
                 'images/water-block.png',   // Top row is water
                 'images/grass-block.png',
                 'images/grass-block.png',
@@ -124,9 +127,8 @@
                 'images/grass-block.png',   // Row 3 of 3 of stone
                 'images/stone-block.png',   // Row 1 of 2 of grass
                 'images/stone-block.png',   // Row 2 of 2 of grass
-                'images/stone-block.png'
             ],
-            numRows = 10,
+            numRows = 11,
             numCols = 9,
             row, col;
 
@@ -144,13 +146,13 @@
                  * we're using them over and over.
                  */
                 ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
-                ctx.drawImage(Resources.get('images/bridge.png'), 353, -366);
+                ctx.drawImage(Resources.get('images/bridge.png'), 353, -285);
             }
         }
 
         renderEntities();
 
-                ctx.drawImage(Resources.get('images/sign.png'), 355, -7);
+                ctx.drawImage(Resources.get('images/sign.png'), 355, 78);
 
     }
 
